@@ -511,7 +511,10 @@ namespace Drastic.Tempest.Providers.Network
             return messages;
         }
 
-        protected const int MaxMessageSize = 65507;
+        protected int MaxMessageSize
+        {
+            get { return NetworkConnection.MaxMessageSize; }
+        }
 
         protected ISerializationContext serializationContext;
         protected const int ResponseFlag = 16777216;

@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "SimpleChat (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "SimpleChat (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

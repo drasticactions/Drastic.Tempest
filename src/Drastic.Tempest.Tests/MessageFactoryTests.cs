@@ -2,6 +2,8 @@
 // Copyright (c) Tempest Contributors. All rights reserved.
 // </copyright>
 
+using System.Reflection;
+
 namespace Drastic.Tempest.Tests
 {
     [TestFixture]
@@ -13,6 +15,51 @@ namespace Drastic.Tempest.Tests
         public void Setup()
         {
             protocol = new Protocol(MockProtocol.Instance.id, MockProtocol.Instance.Version);
+        }
+
+        [Test]
+        public void DiscoverNull()
+        {
+            Assert.Throws<ArgumentNullException>(() => protocol.Discover(null));
+        }
+
+        [Test]
+        public void Discover()
+        {
+            protocol.Discover();
+
+            Message m = protocol.Create(1);
+            Assert.IsNotNull(m);
+            Assert.That(m, Is.TypeOf<MockMessage>());
+        }
+
+        [Test]
+        public void DiscoverAssembly()
+        {
+            protocol.Discover(typeof(MessageFactoryTests).GetTypeInfo().Assembly);
+
+            Message m = protocol.Create(1);
+            Assert.IsNotNull(m);
+            Assert.That(m, Is.TypeOf<MockMessage>());
+        }
+
+        [Test]
+        public void DiscoverFromAssymblyOf()
+        {
+            protocol.DiscoverFromAssemblyOf<MessageFactoryTests>();
+
+            Message m = protocol.Create(1);
+            Assert.IsNotNull(m);
+            Assert.That(m, Is.TypeOf<MockMessage>());
+        }
+
+        [Test]
+        public void DiscoverAssemblyNothing()
+        {
+            protocol.Discover(typeof(string).GetTypeInfo().Assembly);
+
+            Message m = protocol.Create(1);
+            Assert.IsNull(m);
         }
 
         [Test]

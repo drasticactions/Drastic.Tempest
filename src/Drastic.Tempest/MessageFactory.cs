@@ -4,6 +4,7 @@
 
 using System.Collections.Concurrent;
 using System.Reflection;
+using System.Reflection.Emit;
 
 namespace Drastic.Tempest
 {
@@ -17,6 +18,46 @@ namespace Drastic.Tempest
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// Discovers and registers message types from <paramref name="assembly"/>.
+        /// </summary>
+        /// <param name="assembly">The assembly to discover message types from.</param>
+        /// <seealso cref="Discover()"/>
+        /// <exception cref="ArgumentNullException"><paramref name="assembly"/> is <c>null</c>.</exception>
+        public void Discover(Assembly assembly)
+        {
+            if (assembly == null)
+                throw new ArgumentNullException("assembly");
+
+            Type mtype = typeof(Message);
+            RegisterTypes(assembly.GetTypes().Where(t =>
+            {
+                var ti = t.GetTypeInfo();
+                return !ti.IsGenericType
+                       && !ti.IsGenericTypeDefinition
+                       && mtype.IsAssignableFrom(t)
+                       && t.GetConstructor(EmptyTypes) != null;
+            }), true);
+        }
+
+        /// <summary>
+		/// Discovers and registers messages from the calling assembly.
+		/// </summary>
+		/// <seealso cref="Discover(System.Reflection.Assembly)"/>
+		public void Discover()
+        {
+            Discover(Assembly.GetCallingAssembly());
+        }
+
+        /// <summary>
+        /// Discovers and registers messages from the assembly of type <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The type who's assembly to discover messages from.</typeparam>
+        public void DiscoverFromAssemblyOf<T>()
+        {
+            Discover(typeof(T).GetTypeInfo().Assembly);
         }
 
         /// <summary>
@@ -77,6 +118,36 @@ namespace Drastic.Tempest
                     throw new ArgumentException(String.Format("A message of type {0} has already been registered.", m.MessageType), "messageTypes");
                 }
             }
+        }
+
+        private void RegisterTypes(IEnumerable<Type> messageTypes, bool ignoreDupes)
+        {
+            if (messageTypes == null)
+                throw new ArgumentNullException("messageTypes");
+
+            Type mtype = typeof(Message);
+
+            var types = new Dictionary<Type, Func<Message>>();
+            foreach (Type t in messageTypes)
+            {
+                if (!mtype.IsAssignableFrom(t))
+                    throw new ArgumentException(String.Format("{0} is not an implementation of Message", t.Name), "messageTypes");
+                if (mtype.IsGenericType || mtype.IsGenericTypeDefinition)
+                    throw new ArgumentException(String.Format("{0} is a generic type which is unsupported", t.Name), "messageTypes");
+
+                ConstructorInfo plessCtor = t.GetConstructor(Type.EmptyTypes);
+                if (plessCtor == null)
+                    throw new ArgumentException(String.Format("{0} has no parameter-less constructor", t.Name), "messageTypes");
+
+                var dplessCtor = new DynamicMethod("plessCtor", mtype, Type.EmptyTypes);
+                var il = dplessCtor.GetILGenerator();
+                il.Emit(OpCodes.Newobj, plessCtor);
+                il.Emit(OpCodes.Ret);
+
+                types.Add(t, (Func<Message>)dplessCtor.CreateDelegate(typeof(Func<Message>)));
+            }
+
+            RegisterTypesWithCtors(types, ignoreDupes);
         }
 
         private static readonly Type[] EmptyTypes = new Type[0];

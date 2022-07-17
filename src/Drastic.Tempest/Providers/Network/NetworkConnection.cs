@@ -2,6 +2,7 @@
 // Copyright (c) Tempest Contributors. All rights reserved.
 // </copyright>
 
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Net.Sockets;
 using Drastic.Tempest.InternalProtocol;
@@ -361,12 +362,8 @@ namespace Drastic.Tempest.Providers.Network
                 }, TaskScheduler.Current);
             }
 
-#if !SILVERLIGHT
             if (this.responses.IsValueCreated)
                 this.responses.Value.CheckTimeouts();
-#else
-			Responses.CheckTimeouts();
-#endif
         }
 
         protected virtual void Recycle()
@@ -386,12 +383,8 @@ namespace Drastic.Tempest.Providers.Network
                 this.lastMessageId = 0;
                 this.nextMessageId = 0;
 
-#if !SILVERLIGHT
                 if (this.responses.IsValueCreated)
                     this.responses.Value.Clear();
-#else
-				Responses.Clear();
-#endif
 
                 this.serializer = null;
             }
@@ -448,51 +441,32 @@ namespace Drastic.Tempest.Providers.Network
             }
 
             SocketAsyncEventArgs eargs = null;
-#if NET_4
-			if (!writerAsyncArgs.TryPop (out eargs))
-			{
-				while (eargs == null)
-				{
-					int count = bufferCount;
-					if (count == sendBufferLimit)
-					{
-						Trace.WriteLineIf (NTrace.TraceVerbose, "Waiting for writer args", callCategory);
 
-						SpinWait wait = new SpinWait();
-						while (!writerAsyncArgs.TryPop (out eargs))
-							wait.SpinOnce();
-					}
-					else if (count == Interlocked.CompareExchange (ref bufferCount, count + 1, count))
-					{
-						Trace.WriteLineIf (NTrace.TraceVerbose, "Creating new writer args", callCategory);
-
-						eargs = new SocketAsyncEventArgs();
-						eargs.SetBuffer (new byte[1024], 0, 1024);
-						eargs.Completed += ReliableSendCompleted;
-					}
-				}
-			}
-#else
-            while (eargs == null)
+            if (!writerAsyncArgs.TryPop(out eargs))
             {
-                lock (writerAsyncArgs)
+                while (eargs == null)
                 {
-                    if (writerAsyncArgs.Count != 0)
-                        eargs = writerAsyncArgs.Pop();
-                    else if (bufferCount != sendBufferLimit)
+                    int count = bufferCount;
+                    if (count == sendBufferLimit)
                     {
-                        bufferCount++;
+                        Trace.WriteLineIf(NTrace.TraceVerbose, "Waiting for writer args", callCategory);
+
+                        SpinWait wait = new SpinWait();
+                        while (!writerAsyncArgs.TryPop(out eargs))
+                            wait.SpinOnce();
+                    }
+                    else if (count == Interlocked.CompareExchange(ref bufferCount, count + 1, count))
+                    {
+                        Trace.WriteLineIf(NTrace.TraceVerbose, "Creating new writer args", callCategory);
+
                         eargs = new SocketAsyncEventArgs();
                         eargs.SetBuffer(new byte[1024], 0, 1024);
                         eargs.Completed += ReliableSendCompleted;
                     }
                 }
             }
-#endif
 
-#if !SILVERLIGHT
             eargs.AcceptSocket = null;
-#endif
 
             Trace.WriteLineIf(NTrace.TraceVerbose, "Have writer args", callCategory);
 
@@ -513,10 +487,9 @@ namespace Drastic.Tempest.Providers.Network
                     int sp = Interlocked.Decrement(ref this.pendingAsync);
                     Trace.WriteLineIf(NTrace.TraceVerbose, String.Format("Decrement pending: {0}", sp), callCategory);
 
-#if !NET_4
                     lock (writerAsyncArgs)
-#endif
                         writerAsyncArgs.Push(eargs);
+
 
                     Trace.WriteLineIf(NTrace.TraceVerbose, "Exiting (serializer is null, probably disconnecting)", callCategory);
                     tcs.SetResult(false);
@@ -537,9 +510,7 @@ namespace Drastic.Tempest.Providers.Network
                     Interlocked.Decrement(ref this.pendingAsync);
                     Trace.WriteLineIf(NTrace.TraceVerbose, String.Format("Decrement pending: {0}", p), callCategory);
 
-#if !NET_4
                     lock (writerAsyncArgs)
-#endif
                         writerAsyncArgs.Push(eargs);
 
                     tcs.SetResult(false);
@@ -583,11 +554,7 @@ namespace Drastic.Tempest.Providers.Network
                     return;
                 }
 
-#if !SILVERLIGHT
                 this.lastActivity = Stopwatch.GetTimestamp();
-#else
-				this.lastActivity = DateTime.Now.Ticks;
-#endif
 
                 Interlocked.Add(ref this.bytesReceived, e.BytesTransferred);
 
@@ -822,11 +789,7 @@ namespace Drastic.Tempest.Providers.Network
         private static bool autoSizeSendBufferLimit = true;
         private static int autoSizeFactor = 1;
 
-#if NET_4
-		private static readonly ConcurrentStack<SocketAsyncEventArgs> writerAsyncArgs = new ConcurrentStack<SocketAsyncEventArgs>();
-#else
-        private static readonly Stack<SocketAsyncEventArgs> writerAsyncArgs = new Stack<SocketAsyncEventArgs>();
-#endif
+        private static readonly ConcurrentStack<SocketAsyncEventArgs> writerAsyncArgs = new ConcurrentStack<SocketAsyncEventArgs>();
 
         private static void ReliableSendCompleted(object sender, SocketAsyncEventArgs e)
         {
@@ -841,9 +804,7 @@ namespace Drastic.Tempest.Providers.Network
             Trace.WriteLineIf(NTrace.TraceVerbose, "Entering", callCategory);
 #endif
 
-#if !NET_4
             lock (writerAsyncArgs)
-#endif
                 writerAsyncArgs.Push(e);
 
             int p;

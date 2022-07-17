@@ -16,12 +16,14 @@ namespace Drastic.Tempest.Tests
                 throw new ArgumentNullException("provider");
 
             this.provider = provider;
+            this.connection = new MockServerConnection(this);
         }
 
         public MockClientConnection(MockConnectionProvider provider, IEnumerable<Protocol> protocols)
             : this(provider)
         {
             this.protocols = protocols;
+            this.connection = new MockServerConnection(this);
         }
 
         public event EventHandler<ClientConnectionEventArgs> Connected;

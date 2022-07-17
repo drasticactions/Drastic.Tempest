@@ -387,13 +387,8 @@ namespace Drastic.Tempest.Providers.Network
                     e.Dispose();
                 else
                 {
-#if !SILVERLIGHT
                     e.AcceptSocket.Shutdown(SocketShutdown.Both);
                     e.AcceptSocket.Disconnect(true);
-                    //    ReliableSockets.Push (this.reliableSocket);
-#else
-					e.ConnectSocket.Dispose();
-#endif
                     BeginAccepting(e);
                 }
 

@@ -245,10 +245,8 @@ namespace Drastic.Tempest.Tests
             writer.WriteString(Encoding.UTF8, String.Empty);
             writer.WriteString(Encoding.UTF8, value);
 
-#if !SILVERLIGHT && !NETFX_CORE
             writer.WriteString(Encoding.UTF32, value);
             writer.WriteString(Encoding.ASCII, value);
-#endif
 
             writer.Flush();
 
@@ -257,10 +255,8 @@ namespace Drastic.Tempest.Tests
             Assert.AreEqual(String.Empty, reader.ReadString(Encoding.UTF8));
             Assert.AreEqual(value, reader.ReadString(Encoding.UTF8));
 
-#if !SILVERLIGHT && !NETFX_CORE
             Assert.AreEqual(value, reader.ReadString(Encoding.UTF32));
             Assert.AreEqual(value, reader.ReadString(Encoding.ASCII));
-#endif
         }
 
         [Test]
