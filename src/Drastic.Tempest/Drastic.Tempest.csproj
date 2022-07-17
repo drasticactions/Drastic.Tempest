@@ -7,5 +7,6 @@
 	
 	<ItemGroup>
 		<AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
+		<InternalsVisibleToSuffix Include=".Tests" />
 	</ItemGroup>
 </Project>
