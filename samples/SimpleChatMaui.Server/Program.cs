@@ -1,5 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-using Drastic.Tempest;
+﻿using Drastic.Tempest;
 using Drastic.Tempest.Providers.Network;
 using Sharprompt;
 using SimpleChat.Core;

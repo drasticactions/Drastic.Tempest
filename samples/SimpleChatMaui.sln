@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.32716.27
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleChat.Core", "SimpleChat.Core\SimpleChat.Core.csproj", "{CC997670-C1AC-474B-8133-77BD8B8B24A0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleChatMaui", "SimpleChatMaui\SimpleChatMaui.csproj", "{01822DA8-0B5A-4F40-8FD0-2BE5158D39A4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CC997670-C1AC-474B-8133-77BD8B8B24A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC997670-C1AC-474B-8133-77BD8B8B24A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC997670-C1AC-474B-8133-77BD8B8B24A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC997670-C1AC-474B-8133-77BD8B8B24A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01822DA8-0B5A-4F40-8FD0-2BE5158D39A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01822DA8-0B5A-4F40-8FD0-2BE5158D39A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01822DA8-0B5A-4F40-8FD0-2BE5158D39A4}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{01822DA8-0B5A-4F40-8FD0-2BE5158D39A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01822DA8-0B5A-4F40-8FD0-2BE5158D39A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01822DA8-0B5A-4F40-8FD0-2BE5158D39A4}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8815F383-7F95-4DDD-9F14-E9EFE312CF1A}
+	EndGlobalSection
+EndGlobal

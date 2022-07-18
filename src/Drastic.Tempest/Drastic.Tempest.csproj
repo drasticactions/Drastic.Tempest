@@ -1,12 +1,31 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
+		<PackageId>Drastic.Tempest</PackageId>
+		<Authors>Drastic Actions</Authors>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<Company>Drastic.Tempest + Tempest Contributors</Company>
+		<Description>A simple library for sending and receiving messages across any number of transports and dealing with them in a uniform manner.</Description>
+		<Copyright>MIT</Copyright>
+		<PackageTags>transport tcp udp client server</PackageTags>
+		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+		<IncludeSymbols>true</IncludeSymbols>
+		<PackageProjectUrl>https://github.com/drasticactions/Drastic.Tempest</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/drasticactions/Drastic.Tempest</RepositoryUrl>
+		<IncludeSymbols>true</IncludeSymbols>
 		<TargetFramework>net6.0</TargetFramework>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
-	
+
 	<ItemGroup>
 		<AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
 		<InternalsVisibleToSuffix Include=".Tests" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="MinVer" Version="4.1.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 	</ItemGroup>
 </Project>
