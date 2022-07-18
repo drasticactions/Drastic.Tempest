@@ -1,4 +1,7 @@
 # Drastic.Tempest
+
+[![NuGet version (Drastic.Tempest)](https://img.shields.io/nuget/v/Drastic.Tempest.svg?style=flat-square)](https://www.nuget.org/packages/Drastic.Tempest/)
+
 Drastic.Tempest is a hard fork of [Tempest](https://github.com/ermau/Tempest) by [Eric Maupin](https://github.com/ermau). Drastic.Tempest updates the base targets to `net6.0` and removes the older device specific implementations, which are not needed anymore. You should be able to use this on any platform `net6.0` targets. It also removes the use of `BinaryFormatter`, which is not supported for `net6.0` and up platforms. It also removes the `SAFE` implementation.
 
 Otherwise, it's the same as the existing Tempest library and can be used as such.
