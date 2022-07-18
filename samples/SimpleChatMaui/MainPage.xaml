@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Name="this"
+             x:Class="SimpleChatMaui.MainPage">
+
+    <Grid Margin="0,50,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <ListView ItemsSource="{Binding ChatLog}"/>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Entry x:Name="ChatTextEntry" Placeholder="Chat Text..."/>
+
+            <Button Grid.Column="1" Command="{Binding SendMessageCommandAsync}" CommandParameter="{Binding Text, Source={x:Reference ChatTextEntry}}" Text="Send"/>
+        </Grid>
+    </Grid>
+
+</ContentPage>

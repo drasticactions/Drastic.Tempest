@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SimpleChatMaui.SetupPage"
+             Title="SetupPage">
+    <VerticalStackLayout Margin="20" Spacing="10" VerticalOptions="Center">
+        <Entry x:Name="NetworkAddressEntry" Placeholder="Network Address" />
+        <Entry x:Name="PortEntry" Placeholder="Port Number" Text="8888" Keyboard="Numeric" />
+        <Button x:Name="ConnectButton" Clicked="ConnectButton_Clicked" Text="Connect to Server"/>
+    </VerticalStackLayout>
+</ContentPage>

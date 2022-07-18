@@ -51,5 +51,10 @@ namespace Drastic.Tempest
             get;
             set;
         }
+
+        public override string ToString()
+        {
+            return $"Rejected: {Rejected}, From: {Connection.ConnectionId}, IsConnected: {Connection.IsConnected}";
+        }
     }
 }
