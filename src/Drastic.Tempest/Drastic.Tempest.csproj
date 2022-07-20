@@ -15,6 +15,9 @@
 		<IncludeSymbols>true</IncludeSymbols>
 		<TargetFrameworks>net6.0;net472</TargetFrameworks>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<PackageReleaseNotes>
+			- Add net472 support.
+		</PackageReleaseNotes>
 	</PropertyGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
