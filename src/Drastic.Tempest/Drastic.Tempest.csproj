@@ -13,9 +13,13 @@
 		<PackageProjectUrl>https://github.com/drasticactions/Drastic.Tempest</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/drasticactions/Drastic.Tempest</RepositoryUrl>
 		<IncludeSymbols>true</IncludeSymbols>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFrameworks>net6.0;net472</TargetFrameworks>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
+		<Reference Include="System.Net.Http" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<None Include="..\..\LICENSE.md">
