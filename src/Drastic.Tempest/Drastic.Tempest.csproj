@@ -13,7 +13,7 @@
 		<PackageProjectUrl>https://github.com/drasticactions/Drastic.Tempest</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/drasticactions/Drastic.Tempest</RepositoryUrl>
 		<IncludeSymbols>true</IncludeSymbols>
-		<TargetFrameworks>net6.0;net472</TargetFrameworks>
+		<TargetFrameworks>net6.0;net472;netstandard2.0</TargetFrameworks>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<PackageReleaseNotes>
 			- Add net472 support.

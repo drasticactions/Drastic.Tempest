@@ -20,6 +20,12 @@ namespace Drastic.Tempest
             private set;
         }
 
+#if NETSTANDARD
+        public void Discover(Assembly assembly)
+        {
+            throw new NotImplementedException();
+        }
+#else
         /// <summary>
         /// Discovers and registers message types from <paramref name="assembly"/>.
         /// </summary>
@@ -41,12 +47,13 @@ namespace Drastic.Tempest
                        && t.GetConstructor(EmptyTypes) != null;
             }), true);
         }
+#endif
 
         /// <summary>
-		/// Discovers and registers messages from the calling assembly.
-		/// </summary>
-		/// <seealso cref="Discover(System.Reflection.Assembly)"/>
-		public void Discover()
+        /// Discovers and registers messages from the calling assembly.
+        /// </summary>
+        /// <seealso cref="Discover(System.Reflection.Assembly)"/>
+        public void Discover()
         {
             Discover(Assembly.GetCallingAssembly());
         }
@@ -120,6 +127,7 @@ namespace Drastic.Tempest
             }
         }
 
+#if !NETSTANDARD
         private void RegisterTypes(IEnumerable<Type> messageTypes, bool ignoreDupes)
         {
             if (messageTypes == null)
@@ -149,6 +157,7 @@ namespace Drastic.Tempest
 
             RegisterTypesWithCtors(types, ignoreDupes);
         }
+#endif
 
         private static readonly Type[] EmptyTypes = new Type[0];
     }

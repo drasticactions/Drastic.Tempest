@@ -17,6 +17,8 @@ namespace Drastic.Tempest.Tests
             protocol = new Protocol(MockProtocol.Instance.id, MockProtocol.Instance.Version);
         }
 
+#if NET472_OR_GREATER || NET6_0_OR_GREATER
+
         [Test]
         public void DiscoverNull()
         {
@@ -61,6 +63,8 @@ namespace Drastic.Tempest.Tests
             Message m = protocol.Create(1);
             Assert.IsNull(m);
         }
+
+#endif
 
         [Test]
         public void RegisterNull()
